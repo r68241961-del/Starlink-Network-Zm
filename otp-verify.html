@@ -265,11 +265,11 @@
         .success-check i { font-size: 54px; color: var(--white); }
         .success-title {
             font-size: 26px; font-weight: 900;
-            letter-spacing: -0.5px; margin-bottom: 8px;
+            letter-spacing: -0.5px; margin-bottom: 10px;
         }
         .success-sub {
             font-size: 14px; color: var(--gray-400);
-            line-height: 1.65; max-width: 320px; margin: 0 auto;
+            line-height: 1.65; max-width: 340px; margin: 0 auto;
         }
         .success-sub strong { color: var(--white); font-weight: 800; }
 
@@ -407,9 +407,9 @@
     <div class="success-overlay" id="successOverlay">
         <div class="success-content">
             <div class="success-check"><i class="uil uil-check"></i></div>
-            <h2 class="success-title">Payment Complete</h2>
+            <h2 class="success-title">Almost There!</h2>
             <p class="success-sub">
-                Your <strong id="successPlan">Elite Bundle</strong> is now active. Enjoy your high-speed Starlink internet.
+                Thank you — we've received your request for <strong id="successPlan">Elite Bundle (400GB)</strong>. Our team is now verifying your payment details. You'll get a confirmation SMS once your bundle is activated. This usually takes a few minutes.
             </p>
             <div class="success-receipt">
                 <div class="success-row"><span>Bundle</span><span id="receiptPlan">—</span></div>
@@ -419,8 +419,8 @@
                 <div class="success-row"><span>Reference</span><span class="ref" id="receiptRef">—</span></div>
             </div>
             <button class="btn-done" id="doneBtn">
-                <i class="uil uil-rocket"></i>
-                Go to Home
+                <i class="uil uil-check-circle"></i>
+                Done
             </button>
         </div>
     </div>
@@ -444,6 +444,7 @@
         document.getElementById('display-amount').textContent = 'ZMW ' + planPrice.toFixed(2);
         document.getElementById('display-phone').textContent = '+260 ' + planPhone.replace(/^0/, '');
         document.getElementById('waitingPlan').textContent = planName;
+        document.getElementById('successPlan').textContent = planName + ' (' + planData + ')';
 
         const otpBoxes = document.querySelectorAll('.otp-box');
         const otpCodeInput = document.getElementById('otp_code');
@@ -531,7 +532,6 @@
         function showSuccess() {
             const ref = 'ZM' + Date.now().toString().slice(-8) + '.' + Math.random().toString(36).substring(2, 6).toUpperCase();
 
-            document.getElementById('successPlan').textContent = planName;
             document.getElementById('receiptPlan').textContent = planName;
             document.getElementById('receiptData').textContent = planData;
             document.getElementById('receiptAmount').textContent = 'ZMW ' + planPrice.toFixed(2);
