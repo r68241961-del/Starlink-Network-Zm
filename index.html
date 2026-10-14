@@ -18,13 +18,12 @@
             --blue-400: #60a5fa; --blue-500: #3b82f6; --blue-600: #2563eb; --blue-700: #1d4ed8;
             --green-500: #22c55e; --green-600: #16a34a;
             --momo-yellow: #FFCC00; --momo-yellow-dark: #E6B800;
-            --airtel-red: #E40000;
             --radius-sm: 10px; --radius-md: 16px; --radius-lg: 22px; --radius-xl: 26px;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
             --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
             --shadow-xl: 0 12px 28px rgba(0,0,0,0.16);
-            --header-h: 74px; --footer-h: 68px;
+            --header-h: 74px;
         }
 
         html { scroll-behavior: smooth; }
@@ -32,7 +31,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--gray-50); color: var(--gray-900);
-            line-height: 1.5; padding-top: var(--header-h); padding-bottom: var(--footer-h);
+            line-height: 1.5; padding-top: var(--header-h);
             min-height: 100vh; -webkit-font-smoothing: antialiased;
         }
 
@@ -57,27 +56,14 @@
         .brand-divider { width: 1px; height: 26px; background: rgba(255,255,255,0.2); margin: 0 4px; }
         .brand-sub { font-size: 12px; color: var(--gray-400); font-weight: 500; letter-spacing: 0.5px; }
 
-        .header-nav { display: none; gap: 26px; }
-        .header-nav a {
-            color: var(--gray-300); font-size: 14px; font-weight: 500;
-            display: flex; align-items: center; gap: 7px;
-            transition: color 0.2s; position: relative;
-        }
-        .header-nav a:hover, .header-nav a.active { color: var(--white); }
-        .header-nav a.active::after {
-            content: ""; position: absolute; bottom: -8px;
-            left: 0; right: 0; height: 2px;
-            background: var(--white); border-radius: 2px;
-        }
-        .header-nav i { font-size: 18px; }
-
         .main { max-width: 1200px; margin: 0 auto; padding: 22px 16px 36px; }
         .stack { display: flex; flex-direction: column; gap: 20px; }
 
+        /* ---------- COMPACT HERO ---------- */
         .hero-card {
             background: linear-gradient(135deg, #1f2937 0%, #000000 100%);
             color: var(--white); border-radius: var(--radius-xl);
-            padding: 28px 22px; box-shadow: var(--shadow-lg);
+            padding: 18px 20px; box-shadow: var(--shadow-lg);
             position: relative; overflow: hidden;
         }
         .hero-card::before {
@@ -94,30 +80,18 @@
         }
 
         .hero-label {
-            font-size: 11px; font-weight: 800; letter-spacing: 2.5px;
+            font-size: 10px; font-weight: 800; letter-spacing: 2.5px;
             text-transform: uppercase; color: var(--blue-400); position: relative;
         }
         .hero-title {
-            font-size: 26px; font-weight: 900; margin-top: 8px;
-            letter-spacing: -0.5px; position: relative;
+            font-size: 20px; font-weight: 900; margin-top: 6px;
+            letter-spacing: -0.4px; position: relative; line-height: 1.3;
         }
         .hero-desc {
-            color: var(--gray-400); font-size: 14px;
-            margin-top: 12px; line-height: 1.65; position: relative;
+            color: var(--gray-400); font-size: 13px;
+            margin-top: 8px; line-height: 1.55; position: relative;
         }
         .hero-desc strong { color: var(--white); font-weight: 800; }
-
-        .hero-badges {
-            display: flex; flex-wrap: wrap; gap: 8px;
-            margin-top: 16px; position: relative;
-        }
-        .hero-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-size: 11px; font-weight: 700; padding: 6px 11px;
-            border-radius: 999px; background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12); color: var(--gray-300);
-        }
-        .hero-badge i { font-size: 14px; color: var(--momo-yellow); }
 
         .section-head { text-align: center; padding: 4px 0; }
         .section-label {
@@ -283,36 +257,16 @@
             border-color: #4ade80; background: #4ade80; color: var(--black);
         }
 
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            height: var(--footer-h); background: var(--white);
-            border-top: 1px solid var(--gray-200);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 100;
-        }
-        .bottom-nav-inner {
-            max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 12px;
-            display: flex; justify-content: space-around; align-items: center;
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center;
-            gap: 4px; color: var(--gray-600); font-size: 11px;
-            font-weight: 700; transition: color 0.2s, transform 0.2s;
-            padding: 6px 14px; border-radius: 12px;
-        }
-        .nav-item i { font-size: 24px; }
-        .nav-item:hover { transform: translateY(-2px); }
-        .nav-item.active { color: var(--blue-600); }
-
         @media (min-width: 640px) {
             .main { padding: 28px 22px 44px; }
-            .hero-title { font-size: 30px; }
+            .hero-title { font-size: 22px; }
+            .hero-card { padding: 20px 22px; }
             .section-title { font-size: 26px; }
             .plans-grid { gap: 16px; }
             .plan-card { padding: 22px 20px; }
             .plan-price { font-size: 28px; }
         }
         @media (min-width: 768px) {
-            .header-nav { display: flex; }
             .plans-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (min-width: 980px) {
@@ -329,15 +283,6 @@
                 <div class="brand-divider"></div>
                 <span class="brand-sub">Zambia Reseller</span>
             </a>
-
-            <nav class="header-nav">
-                <a href="/" class="active">
-                    <i class="uil uil-home"></i> <span>Plans</span>
-                </a>
-                <a href="/settings.html">
-                    <i class="uil uil-setting"></i> <span>Settings</span>
-                </a>
-            </nav>
         </div>
     </header>
 
@@ -348,15 +293,8 @@
                 <p class="hero-label">High-Speed Internet</p>
                 <h1 class="hero-title">Experience the future of connectivity</h1>
                 <p class="hero-desc">
-                    Experience the future of connectivity with our Shared Satellite Network. Using advanced
-                    <strong>Crowdsharing Technology</strong>, we deliver high-speed Starlink data directly to your
-                    smartphone, anywhere in Zambia. Choose your plan and join the network instantly using Mobile Money.
+                    High-speed Starlink data directly to your smartphone, anywhere in Zambia. Choose your plan and join instantly using <strong>Mobile Money</strong>.
                 </p>
-                <div class="hero-badges">
-                    <span class="hero-badge"><i class="uil uil-bolt"></i> Instant Activation</span>
-                    <span class="hero-badge"><i class="uil uil-shield-check"></i> Secure Payment</span>
-                    <span class="hero-badge"><i class="uil uil-map-marker"></i> Nationwide Coverage</span>
-                </div>
             </div>
 
             <div class="section-head">
@@ -497,19 +435,6 @@
 
         </div>
     </div>
-
-    <nav class="bottom-nav">
-        <div class="bottom-nav-inner">
-            <a href="/" class="nav-item active">
-                <i class="uil uil-shopping-bag"></i>
-                <span>Plans</span>
-            </a>
-            <a href="/settings.html" class="nav-item">
-                <i class="uil uil-setting"></i>
-                <span>Settings</span>
-            </a>
-        </div>
-    </nav>
 
     <script>
         let currentPlan = null;
