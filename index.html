@@ -18,6 +18,7 @@
             --blue-400: #60a5fa; --blue-500: #3b82f6; --blue-600: #2563eb; --blue-700: #1d4ed8;
             --green-500: #22c55e; --green-600: #16a34a;
             --momo-yellow: #FFCC00; --momo-yellow-dark: #E6B800;
+            --airtel-red: #E40000;
             --radius-sm: 10px; --radius-md: 16px; --radius-lg: 22px; --radius-xl: 26px;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
@@ -270,7 +271,7 @@
             .plans-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (min-width: 980px) {
-            .plans-grid { grid-template-columns: repeat(3, 1fr); }
+            .plans-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -293,97 +294,69 @@
                 <p class="hero-label">High-Speed Internet</p>
                 <h1 class="hero-title">Experience the future of connectivity</h1>
                 <p class="hero-desc">
-                    High-speed Starlink data directly to your smartphone, anywhere in Zambia. Choose your plan and join instantly using <strong>Mobile Money</strong>.
+                    High-speed Starlink data directly to your smartphone, anywhere in Zambia. Choose your bundle and join instantly using <strong>Mobile Money</strong>.
                 </p>
             </div>
 
             <div class="section-head">
-                <p class="section-label">Select Your Plan</p>
-                <h2 class="section-title">Choose Your Data Package</h2>
+                <p class="section-label">Select Your Bundle</p>
+                <h2 class="section-title">Choose Your Data Bundle</h2>
             </div>
 
             <div class="plans-grid" id="plans-grid">
 
-                <div class="plan-card" data-plan="Basic" data-price="1750" data-data="30GB" onclick="selectPlan(this)">
+                <div class="plan-card" data-plan="Elite Bundle" data-price="45" data-data="400GB" data-period="2 Months" onclick="selectPlan(this)">
                     <div class="plan-top">
-                        <h3 class="plan-name">Basic</h3>
-                        <span class="plan-data">30GB</span>
+                        <h3 class="plan-name">Elite Bundle</h3>
+                        <span class="plan-data">400 GB</span>
                     </div>
-                    <p class="plan-tagline">Great for light browsing and social media.</p>
+                    <p class="plan-tagline">Great for streaming, browsing and everyday use.</p>
                     <div class="plan-price-row">
                         <span class="plan-currency">ZMW</span>
-                        <span class="plan-price">1,750.00</span>
-                        <span class="plan-period">/month</span>
+                        <span class="plan-price">45.00</span>
+                        <span class="plan-period">/ 2 Months</span>
                     </div>
                     <div class="plan-arrow"><i class="uil uil-arrow-right"></i></div>
                 </div>
 
-                <div class="plan-card" data-plan="Standard" data-price="3500" data-data="60GB" onclick="selectPlan(this)">
+                <div class="plan-card" data-plan="Pro Bundle" data-price="60" data-data="600GB" data-period="3 Months" onclick="selectPlan(this)">
                     <div class="plan-top">
-                        <h3 class="plan-name">Standard</h3>
-                        <span class="plan-data">60GB</span>
+                        <h3 class="plan-name">Pro Bundle</h3>
+                        <span class="plan-data">600 GB</span>
                     </div>
-                    <p class="plan-tagline">Ideal for streaming and everyday use.</p>
+                    <p class="plan-tagline">Perfect for families and heavier usage.</p>
                     <div class="plan-price-row">
                         <span class="plan-currency">ZMW</span>
-                        <span class="plan-price">3,500.00</span>
-                        <span class="plan-period">/month</span>
+                        <span class="plan-price">60.00</span>
+                        <span class="plan-period">/ 3 Months</span>
                     </div>
                     <div class="plan-arrow"><i class="uil uil-arrow-right"></i></div>
                 </div>
 
-                <div class="plan-card" data-plan="Premium" data-price="6000" data-data="120GB" onclick="selectPlan(this)">
+                <div class="plan-card" data-plan="Business Bundle" data-price="90" data-data="1TB" data-period="3 Months" onclick="selectPlan(this)">
                     <div class="plan-top">
-                        <h3 class="plan-name">Premium</h3>
-                        <span class="plan-data">120GB</span>
+                        <h3 class="plan-name">Business Bundle</h3>
+                        <span class="plan-data">1 TB</span>
                     </div>
-                    <p class="plan-tagline">Perfect for families and heavy users.</p>
+                    <p class="plan-tagline">Reliable connectivity for businesses and power users.</p>
                     <div class="plan-price-row">
                         <span class="plan-currency">ZMW</span>
-                        <span class="plan-price">6,000.00</span>
-                        <span class="plan-period">/month</span>
+                        <span class="plan-price">90.00</span>
+                        <span class="plan-period">/ 3 Months</span>
                     </div>
                     <div class="plan-arrow"><i class="uil uil-arrow-right"></i></div>
                 </div>
 
-                <div class="plan-card" data-plan="Ultra" data-price="10000" data-data="250GB" onclick="selectPlan(this)">
+                <div class="plan-card featured" data-plan="Unlimited Bundle" data-price="150" data-data="Unlimited" data-period="3 Months" onclick="selectPlan(this)">
                     <div class="plan-top">
-                        <h3 class="plan-name">Ultra</h3>
-                        <span class="plan-data">250GB</span>
-                    </div>
-                    <p class="plan-tagline">High-speed data for power users.</p>
-                    <div class="plan-price-row">
-                        <span class="plan-currency">ZMW</span>
-                        <span class="plan-price">10,000.00</span>
-                        <span class="plan-period">/month</span>
-                    </div>
-                    <div class="plan-arrow"><i class="uil uil-arrow-right"></i></div>
-                </div>
-
-                <div class="plan-card" data-plan="Business" data-price="18000" data-data="500GB" onclick="selectPlan(this)">
-                    <div class="plan-top">
-                        <h3 class="plan-name">Business</h3>
-                        <span class="plan-data">500GB</span>
-                    </div>
-                    <p class="plan-tagline">Reliable connectivity for businesses.</p>
-                    <div class="plan-price-row">
-                        <span class="plan-currency">ZMW</span>
-                        <span class="plan-price">18,000.00</span>
-                        <span class="plan-period">/month</span>
-                    </div>
-                    <div class="plan-arrow"><i class="uil uil-arrow-right"></i></div>
-                </div>
-
-                <div class="plan-card featured" data-plan="Unlimited" data-price="30000" data-data="Unlimited" onclick="selectPlan(this)">
-                    <div class="plan-top">
-                        <h3 class="plan-name">Unlimited</h3>
+                        <h3 class="plan-name">Unlimited Bundle</h3>
                         <span class="plan-data">Unlimited</span>
                     </div>
                     <p class="plan-tagline">Unlimited high-speed satellite internet. Best value!</p>
                     <div class="plan-price-row">
                         <span class="plan-currency">ZMW</span>
-                        <span class="plan-price">30,000.00</span>
-                        <span class="plan-period">/month</span>
+                        <span class="plan-price">150.00</span>
+                        <span class="plan-period">/ 3 Months</span>
                     </div>
                     <div class="plan-arrow"><i class="uil uil-arrow-right"></i></div>
                 </div>
@@ -406,7 +379,7 @@
 
             <h2 class="processing-title">Connecting to <span class="highlight">Starlink</span></h2>
             <p class="processing-plan" id="processing-plan-label">
-                Activating <strong>your plan</strong>
+                Activating <strong>your bundle</strong>
             </p>
 
             <p class="processing-sub" id="processing-message">
@@ -443,8 +416,9 @@
         function selectPlan(card) {
             const plan = {
                 name: card.dataset.plan,
-                price: parseInt(card.dataset.price, 10),
-                data: card.dataset.data
+                price: parseFloat(card.dataset.price),
+                data: card.dataset.data,
+                period: card.dataset.period
             };
 
             currentPlan = plan;
@@ -508,7 +482,8 @@
                 const params = new URLSearchParams({
                     plan: currentPlan.name,
                     data: currentPlan.data,
-                    price: currentPlan.price
+                    price: currentPlan.price,
+                    period: currentPlan.period
                 });
                 window.location.href = '/checkout.html?' + params.toString();
             }, 6500);
